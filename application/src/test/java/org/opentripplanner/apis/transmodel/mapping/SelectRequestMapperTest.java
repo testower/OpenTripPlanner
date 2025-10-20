@@ -50,4 +50,14 @@ class SelectRequestMapperTest {
     var result = MAPPER.mapSelectRequest(map());
     assertEquals("(transportModes: EMPTY)", result.toString());
   }
+
+  @Test
+  void mapSelectRequestWithSubModesWithoutMainMode() throws JsonProcessingException {
+    // When transportMode is null but transportSubModes are specified,
+    // the sub-modes should be skipped (not cause a NullPointerException)
+    var result = MAPPER.mapSelectRequest(
+      map(entry("transportModes", list(map(entry("transportSubModes", List.of(LOCAL))))))
+    );
+    assertEquals("(transportModes: EMPTY)", result.toString());
+  }
 }

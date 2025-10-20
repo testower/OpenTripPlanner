@@ -43,6 +43,12 @@ class SelectRequestMapper {
       var transportModes = (List<Map<String, ?>>) input.get("transportModes");
       for (Map<String, ?> modeWithSubModes : transportModes) {
         var mainMode = (TransitMode) modeWithSubModes.get("transportMode");
+
+        // Skip if main mode is null - sub-modes without a main mode are invalid
+        if (mainMode == null) {
+          continue;
+        }
+
         if (modeWithSubModes.containsKey("transportSubModes")) {
           var transportSubModes = (List<TransmodelTransportSubmode>) modeWithSubModes.get(
             "transportSubModes"
